@@ -1,0 +1,120 @@
+/*  Names: Reagan Wilcox, Julia Meissner, Galilea Olvera
+    Section: 4
+    Date: 3/16/2019
+    File name: LAB 3-2
+*/
+
+//-----------------------------------------------------------------------------
+// Compiler Directives
+//-----------------------------------------------------------------------------
+#include <c8051_SDCC.h>
+#include <stdio.h>
+#include <i2c.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+//-----------------------------------------------------------------------------
+// Function Prototypes
+//-----------------------------------------------------------------------------
+void Port_Init(void);			// Initialize ports for input and output
+void PCA_Init(void);			// Initialize PCA
+void XBR0_Init(void);			// Initialize XBR0s
+void PCA_ISR(void) __interrupt 9;	// Initialize Timer Interrupt Service 
+
+unsigned char i2c_read(void);
+unsigned char i2c_stop_and_read(void);
+
+//------------------------------------------------------------------------------
+// I2C Bus (SMBus) register bit definitions
+//------------------------------------------------------------------------------
+/* The following lines are an example of setting up sbit names for the SMBus
+ the c8051F020.h file creates the sbit names that are used in this code */
+ 
+__sbit __at 0xC7 BUS_BUSY; //SM Bus Busy (bit 7)
+__sbit __at 0xC6 BUS_EN; //SM Bus Enable (bit 6)
+__sbit __at 0xC5 BUS_START;//SM Bus Start (bit 5)
+__sbit __at 0xC4 BUS_STOP; //SM Bus Stop (bit 4)
+__sbit __at 0xC3 BUS_INT; //SM Bus Interrupt (bit 3)
+__sbit __at 0xC2 BUS_AA; //SM Bus ACK (bit 2)
+__sbit __at 0xC1 BUS_FTE; //SM Bus Clock timeout - high (bit 1)
+__sbit __at 0xC0 BUS_TOE; //SM Bus Clock timeout - low (bit 0)
+__sbit __at 0x83 BUS_SCL;
+
+//-----------------------------------------------------------------------------
+// Global VARIABLES
+//-----------------------------------------------------------------------------
+unsigned char data[3];
+
+//partner 1 variables//
+unsigned int PW_1; 
+unsigned char input_data;
+
+//partner 2 variables//
+
+//partner 3 variables//
+
+//-----------------------------------------------------------------------------
+// Main Function
+//-----------------------------------------------------------------------------
+void main(void)
+{
+	//declare local variables
+    
+	//initialize board
+	Sys_Init();         // System Initialization
+	Port_Init();        // Initialize Ports
+	PCA_Init();         // Initialize PCA
+	PCA_ISR() __interrupt 9;
+	XBR0_Init();
+	putchar(' ');       // the quote fonts may not copy correctly into SiLabs IDE
+    
+    /*****partner 1******/
+    //PW: 65MS => 
+    while (1)
+    {
+        if(PW_1 == 80); //80MS not counts GOTTA CHANGE
+        {
+            i2c_read_and_stop();
+        }
+    }
+    
+}
+
+
+
+/*************************/
+/***PARTNER 1 FUNCTIONS***/
+/*************************/
+
+unsigned char i2c_read(void)
+{
+ while(!SI); //Wait until we have data to read
+ input_data = SMB0DAT; //Read the data
+ SI = 0; //Clear SI
+ return input_data; //Return the read data
+}
+
+unsigned i2c_read_and_stop(void);
+{
+    while (!SI);
+    input_data = SMB0DAT;
+    SI = 0;
+    STO = 1;
+    while (!SI);
+    SI = 0
+    return input_data;
+
+}
+
+/*************************/
+/***PARTNER 2 FUNCTIONS***/
+/*************************/
+
+
+
+
+
+
+/*************************/
+/***PARTNER 3 FUNCTIONS***/
+/*************************/
